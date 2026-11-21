@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#47256b" />
+  <meta name="description" content="Practice, learn, and grow with MCC Quiz from Madina Coaching Centre." />
+  <title>MCC Quiz | Learn by trying</title>
+  <link rel="icon" type="image/png" href="mcc-favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="student-ids.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="MCC Quiz home"><img src="mcc-header.png" alt="Madina Coaching Centre, Budh Vihar, Noida"></a>
+    <div class="topbar-note"><span class="live-dot"></span> A little practice goes a long way</div>
+    <a class="about-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="home">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy">
+        <p class="eyebrow"><span>✳</span> MADINA COACHING CENTRE PRESENTS</p>
+        <h1 id="page-title">MCC <em>Quiz</em></h1>
+        <p class="intro-text">A quick practice space for curious minds. Pick a subject, test what you know, and learn something along the way.</p>
+      </div>
+      <div class="intro-badge" aria-hidden="true"><span>TRY</span><b>✦</b><span>LEARN</span><b>✦</b><span>GROW</span></div>
+    </section>
+
+    <section class="quiz-shell" aria-label="Quiz practice">
+      <div class="quiz-card" id="quiz-card">
+        <div class="setup-view" id="setup-view">
+          <div class="card-heading"><div><p class="eyebrow muted">YOUR PRACTICE SESSION</p><h2>What shall we explore?</h2></div><span class="sparkle" aria-hidden="true">✳</span></div>
+          <p class="subheading">Choose a subject to get started. Each round has five questions.</p>
+          <label class="student-id-card" for="student-id"><span>STUDENT ID FROM YOUR TEACHER</span><input id="student-id" maxlength="12" autocomplete="off" placeholder="Enter Your ID" aria-describedby="student-id-help"></label>
+          <small class="student-id-help" id="student-id-help">Enter the unique ID your teacher gave you. Your practice history is saved in this browser.</small>
+          <p class="student-id-status" id="student-id-status" role="status" aria-live="polite"></p>
+          <div class="subject-grid" role="group" aria-label="Choose a quiz subject">
+            <button class="subject-card selected" type="button" data-subject="math" aria-pressed="true"><span class="subject-icon math-icon">＋</span><span><b>Mathematics</b><small>Numbers &amp; patterns</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
+            <button class="subject-card" type="button" data-subject="science" aria-pressed="false"><span class="subject-icon science-icon">◉</span><span><b>Science</b><small>How the world works</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
+            <button class="subject-card" type="button" data-subject="english" aria-pressed="false"><span class="subject-icon english-icon">Aa</span><span><b>English</b><small>Words &amp; grammar</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
+            <button class="subject-card" type="button" data-subject="general" aria-pressed="false"><span class="subject-icon general-icon">✦</span><span><b>General knowledge</b><small>Curious about everything</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
+          </div>
+          <div class="setup-footer"><p><span>☼</span> No pressure. Just practice.</p><button class="primary-button" id="start-button" type="button">Start a quiz <span aria-hidden="true">↗</span></button></div>
+        </div>
+
+        <div class="question-view" id="question-view" hidden>
+          <div class="quiz-meta"><button class="back-button" id="back-button" type="button"><span aria-hidden="true">←</span> Subjects</button><span id="subject-label">Mathematics</span><span class="question-count" id="question-count">01 / 05</span></div>
+          <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1"><span id="progress-fill"></span></div>
+          <p class="eyebrow muted question-kicker">QUESTION <span id="question-number">01</span></p>
+          <h2 class="question-text" id="question-text" tabindex="-1"></h2>
+          <div class="answer-list" id="answer-list" role="group" aria-label="Answer choices"></div>
+          <div class="answer-feedback" id="answer-feedback" role="status" aria-live="polite"></div>
+          <div class="question-footer"><span id="answered-count">Choose one answer</span><div class="question-actions"><button class="primary-button" id="submit-answer" type="button" hidden>Submit answer <span aria-hidden="true">↗</span></button><button class="primary-button" id="next-button" type="button" hidden>Next question <span aria-hidden="true">→</span></button></div></div>
+        </div>
+
+        <div class="result-view" id="result-view" hidden>
+          <div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow muted">ROUND COMPLETE</p>
+          <h2 id="result-title">Lovely effort!</h2><p class="result-score" id="result-score"></p>
+          <p class="result-copy" id="result-copy"></p><p class="email-status" id="email-status" role="status" aria-live="polite"></p>
+          <div class="result-actions"><button class="primary-button" id="retry-button" type="button">Try another round <span aria-hidden="true">↗</span></button><button class="secondary-button" id="review-button" type="button">Review answers</button></div>
+          <div class="review-list" id="review-list" hidden></div>
+        </div>
+      </div>
+      <p class="quiz-note"><span aria-hidden="true">✳</span> Practice questions for learning. Quiz results are emailed to MCC after each round.</p>
+    </section>
+
+    <section class="how" id="how-it-works"><div class="how-heading"><p class="eyebrow muted">A GOOD WAY TO BEGIN</p><h2>Try. Think. <em>Learn.</em></h2></div><div class="how-steps"><article><span>01</span><h3>Choose a subject</h3><p>Pick the topic you feel like exploring today.</p></article><article><span>02</span><h3>Give it a go</h3><p>Answer at your own pace. You’ll get a helpful nudge after each one.</p></article><article><span>03</span><h3>See what you know</h3><p>Check your score, review your answers, and try again whenever you like.</p></article></div></section>
+  </main>
+
+  <footer><span>© <span id="year"></span> Madina Coaching Centre</span><span>Learn with confidence <b>✳</b></span></footer>
+</body>
+</html>
