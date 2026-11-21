@@ -35,7 +35,7 @@
       <div class="quiz-card" id="quiz-card">
         <div class="setup-view" id="setup-view">
           <div class="card-heading"><div><p class="eyebrow muted">YOUR PRACTICE SESSION</p><h2>What shall we explore?</h2></div><span class="sparkle" aria-hidden="true">✳</span></div>
-          <p class="subheading">Choose a subject to get started. Each round has five questions.</p>
+          <p class="subheading">Choose a subject to get started. General knowledge has five worksheets of five questions each.</p>
           <label class="student-id-card" for="student-id"><span>STUDENT ID FROM YOUR TEACHER</span><input id="student-id" maxlength="12" autocomplete="off" placeholder="Enter Your ID" aria-describedby="student-id-help"></label>
           <small class="student-id-help" id="student-id-help">Enter the unique ID your teacher gave you. Your practice history is saved in this browser.</small>
           <p class="student-id-status" id="student-id-status" role="status" aria-live="polite"></p>
@@ -51,7 +51,7 @@
         <div class="question-view" id="question-view" hidden>
           <div class="quiz-meta"><button class="back-button" id="back-button" type="button"><span aria-hidden="true">←</span> Subjects</button><span id="subject-label">Mathematics</span><span class="question-count" id="question-count">01 / 05</span></div>
           <div class="progress-track" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="1"><span id="progress-fill"></span></div>
-          <p class="eyebrow muted question-kicker">QUESTION <span id="question-number">01</span></p>
+          <p class="eyebrow muted question-kicker">QUESTION 01</p>
           <h2 class="question-text" id="question-text" tabindex="-1"></h2>
           <div class="answer-list" id="answer-list" role="group" aria-label="Answer choices"></div>
           <div class="answer-feedback" id="answer-feedback" role="status" aria-live="polite"></div>
@@ -59,10 +59,11 @@
         </div>
 
         <div class="result-view" id="result-view" hidden>
-          <div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow muted">ROUND COMPLETE</p>
+          <div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow muted" id="result-kicker">ROUND COMPLETE</p>
           <h2 id="result-title">Lovely effort!</h2><p class="result-score" id="result-score"></p>
           <p class="result-copy" id="result-copy"></p><p class="email-status" id="email-status" role="status" aria-live="polite"></p>
-          <div class="result-actions"><button class="primary-button" id="retry-button" type="button">Try another round <span aria-hidden="true">↗</span></button><button class="secondary-button" id="review-button" type="button">Review answers</button></div>
+          <button class="primary-button" id="next-worksheet-button" type="button" hidden>Start next worksheet <span aria-hidden="true">→</span></button>
+          <div class="result-actions"><button class="primary-button" id="retry-button" type="button">Try another round <span aria-hidden="true">↗</span></button><button class="secondary-button" id="review-button" type="button" aria-expanded="false" aria-controls="review-list">Review answers</button></div>
           <div class="review-list" id="review-list" hidden></div>
         </div>
       </div>

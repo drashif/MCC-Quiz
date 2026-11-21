@@ -25,7 +25,26 @@ const quizzes = {
     { q: 'How many days are there in a leap year?', options: ['364', '365', '366', '367'], answer: 2, note: 'A leap year has 366 days, including February 29.' },
     { q: 'Which instrument has black and white keys?', options: ['Flute', 'Piano', 'Drum', 'Trumpet'], answer: 1, note: 'A piano has a keyboard of black and white keys.' },
     { q: 'Which planet is known as the Red Planet?', options: ['Venus', 'Mars', 'Jupiter', 'Mercury'], answer: 1, note: 'Iron-rich dust gives Mars its reddish appearance.' },
-    { q: 'What is the capital city of Japan?', options: ['Seoul', 'Beijing', 'Tokyo', 'Bangkok'], answer: 2, note: 'Tokyo is the capital of Japan.' }
+    { q: 'What is the capital city of Japan?', options: ['Seoul', 'Beijing', 'Tokyo', 'Bangkok'], answer: 2, note: 'Tokyo is the capital of Japan.' },
+    { q: 'Which animal is the largest mammal in the world?', options: ['African elephant', 'Blue whale', 'Giraffe', 'Hippopotamus'], answer: 1, note: 'The blue whale is the largest mammal known to have lived.' },
+    { q: 'How many sides does a hexagon have?', options: ['Five', 'Six', 'Seven', 'Eight'], answer: 1, note: 'A hexagon has six sides.' },
+    { q: 'Which country is famous for the pyramids of Giza?', options: ['Egypt', 'Greece', 'Mexico', 'India'], answer: 0, note: 'The pyramids of Giza are in Egypt.' },
+    { q: 'What do bees collect from flowers to make honey?', options: ['Sap', 'Nectar', 'Seeds', 'Dew'], answer: 1, note: 'Bees collect nectar from flowers and turn it into honey.' },
+    { q: 'Which is the smallest continent by land area?', options: ['Europe', 'Antarctica', 'Australia', 'South America'], answer: 2, note: 'Australia is the smallest continent by land area.' },
+    { q: 'What is the name of Earth’s natural satellite?', options: ['The Moon', 'Phobos', 'Europa', 'Titan'], answer: 0, note: 'The Moon is Earth’s natural satellite.' },
+    { q: 'Which sport uses a racket and a shuttlecock?', options: ['Tennis', 'Badminton', 'Cricket', 'Hockey'], answer: 1, note: 'Players hit a shuttlecock over the net in badminton.' },
+    { q: 'How many colours are traditionally named in a rainbow?', options: ['Five', 'Six', 'Seven', 'Eight'], answer: 2, note: 'A rainbow is traditionally described as having seven colours.' },
+    { q: 'Which bird was historically used to carry messages?', options: ['Parrot', 'Pigeon', 'Peacock', 'Ostrich'], answer: 1, note: 'Pigeons were historically used to carry messages.' },
+    { q: 'Which is the largest hot desert in the world?', options: ['Gobi Desert', 'Sahara Desert', 'Thar Desert', 'Kalahari Desert'], answer: 1, note: 'The Sahara is the world’s largest hot desert.' },
+    { q: 'What is the currency of Japan?', options: ['Yuan', 'Won', 'Yen', 'Baht'], answer: 2, note: 'Japan uses the yen.' },
+    { q: 'Which gas do plants take in from the air?', options: ['Oxygen', 'Carbon dioxide', 'Helium', 'Hydrogen'], answer: 1, note: 'Plants use carbon dioxide during photosynthesis.' },
+    { q: 'How many players from one team are on the field in a football match?', options: ['9', '10', '11', '12'], answer: 2, note: 'A football team has 11 players on the field.' },
+    { q: 'Which is the fastest land animal?', options: ['Lion', 'Cheetah', 'Horse', 'Leopard'], answer: 1, note: 'The cheetah is the fastest land animal over short distances.' },
+    { q: 'Which shape has three sides?', options: ['Square', 'Circle', 'Triangle', 'Rectangle'], answer: 2, note: 'A triangle has three sides.' },
+    { q: 'What is frozen water called?', options: ['Steam', 'Ice', 'Mist', 'Rain'], answer: 1, note: 'When water freezes, it becomes ice.' },
+    { q: 'Which country is home to the Taj Mahal?', options: ['Pakistan', 'India', 'Nepal', 'Bangladesh'], answer: 1, note: 'The Taj Mahal is in Agra, India.' },
+    { q: 'Which sense organ do we use to hear?', options: ['Eyes', 'Ears', 'Nose', 'Skin'], answer: 1, note: 'We use our ears to hear sounds.' },
+    { q: 'How many months are there in a year?', options: ['10', '11', '12', '13'], answer: 2, note: 'There are 12 months in a year.' }
   ]}
 };
 
@@ -39,6 +58,8 @@ let selectedSubject = 'math';
 let questions = [];
 let current = 0;
 let score = 0;
+let worksheetNumber = 1;
+let worksheetScore = 0;
 let responses = [];
 let selectedChoice = null;
 let studentId = '';
@@ -78,8 +99,11 @@ function startQuiz() {
   questions = quizzes[selectedSubject].questions;
   current = 0;
   score = 0;
+  worksheetNumber = 1;
+  worksheetScore = 0;
   responses = [];
   $('#subject-label').textContent = quizzes[selectedSubject].name;
+  $('.progress-track').setAttribute('aria-valuemax', String(questions.length));
   show(questionView);
   renderQuestion();
 }
@@ -89,7 +113,9 @@ function renderQuestion() {
   const number = current + 1;
   selectedChoice = null;
   $('#question-count').textContent = `${String(number).padStart(2, '0')} / ${String(questions.length).padStart(2, '0')}`;
-  $('#question-number').textContent = String(number).padStart(2, '0');
+  $('.question-kicker').textContent = selectedSubject === 'general'
+    ? `WORKSHEET ${Math.floor(current / 5) + 1} · QUESTION ${current % 5 + 1} OF 5`
+    : `QUESTION ${String(number).padStart(2, '0')}`;
   $('#question-text').textContent = item.q;
   $('#progress-fill').style.width = `${(number / questions.length) * 100}%`;
   document.querySelector('.progress-track').setAttribute('aria-valuenow', String(number));
@@ -98,7 +124,10 @@ function renderQuestion() {
   $('#answer-feedback').className = 'answer-feedback';
   $('#submit-answer').hidden = true;
   $('#next-button').hidden = true;
-  $('#next-button').innerHTML = number === questions.length ? 'See my result <span aria-hidden="true">→</span>' : 'Next question <span aria-hidden="true">→</span>';
+  const worksheetEnd = selectedSubject === 'general' && number % 5 === 0;
+  $('#next-button').innerHTML = worksheetEnd
+    ? 'Finish worksheet <span aria-hidden="true">→</span>'
+    : number === questions.length ? 'See my result <span aria-hidden="true">→</span>' : 'Next question <span aria-hidden="true">→</span>';
   const list = $('#answer-list');
   list.replaceChildren();
   item.options.forEach((option, index) => {
@@ -129,7 +158,10 @@ function submitAnswer() {
   const item = questions[current];
   const correct = selectedChoice === item.answer;
   responses[current] = selectedChoice;
-  if (correct) score++;
+  if (correct) {
+    score++;
+    if (selectedSubject === 'general') worksheetScore++;
+  }
   [...$('#answer-list').children].forEach((button, index) => {
     button.disabled = true;
     if (index === item.answer) button.classList.add('correct');
@@ -147,8 +179,12 @@ function submitAnswer() {
 function finishQuiz() {
   show(resultView);
   const percent = score / questions.length;
+  const marksOutOfTen = selectedSubject === 'general' ? (score / questions.length * 10).toFixed(1).replace(/\.0$/, '') : null;
+  $('#result-kicker').textContent = selectedSubject === 'general' ? 'ALL FIVE WORKSHEETS COMPLETE' : 'ROUND COMPLETE';
   $('#result-title').textContent = percent === 1 ? 'Brilliant work!' : percent >= .6 ? 'Lovely effort!' : 'Keep that curiosity!';
-  $('#result-score').textContent = `${score} out of ${questions.length} correct`;
+  $('#result-score').textContent = selectedSubject === 'general'
+    ? `You got ${marksOutOfTen} marks out of 10`
+    : `${score} out of ${questions.length} correct`;
   const progressKey = `mccQuizProgress:${studentId}`;
   let history = [];
   try { history = JSON.parse(localStorage.getItem(progressKey) || '[]'); } catch { history = []; }
@@ -170,6 +206,7 @@ function finishQuiz() {
       student_id: studentId,
       subject: quizzes[selectedSubject].name,
       score: `${score} / ${questions.length}`,
+      marks: selectedSubject === 'general' ? `${marksOutOfTen} / 10` : `${score} / ${questions.length}`,
       rounds_completed: history.length,
       average_score: `${average}%`,
       best_score: `${best}%`,
@@ -186,7 +223,19 @@ function finishQuiz() {
   });
   $('#review-list').hidden = true;
   $('#review-list').replaceChildren();
-  questions.forEach((item, index) => {
+  $('#review-button').textContent = 'Review answers';
+  $('#review-button').setAttribute('aria-expanded', 'false');
+  $('#next-worksheet-button').hidden = true;
+  $('.result-actions').hidden = false;
+  $('#retry-button').hidden = false;
+  $('#review-button').hidden = false;
+}
+
+function renderReviewAnswers() {
+  const list = $('#review-list');
+  list.replaceChildren();
+  const completedQuestions = questions.slice(0, Math.min(current + 1, questions.length));
+  completedQuestions.forEach((item, index) => {
     const row = document.createElement('div');
     row.className = 'review-item';
     const correct = responses[index] === item.answer;
@@ -194,19 +243,63 @@ function finishQuiz() {
     heading.textContent = `${String(index + 1).padStart(2, '0')}  ${item.q}`;
     const answer = document.createElement('span');
     answer.className = correct ? 'right' : 'missed';
-    answer.textContent = `${correct ? '✓ Your answer' : 'Your answer'}: ${item.options[responses[index]]} · Correct answer: ${item.options[item.answer]}`;
+    const chosenAnswer = responses[index] === undefined ? 'Not answered' : item.options[responses[index]];
+    answer.textContent = `${correct ? '✓ Your answer' : 'Your answer'}: ${chosenAnswer} · Correct answer: ${item.options[item.answer]}`;
     row.append(heading, answer);
-    $('#review-list').append(row);
+    list.append(row);
   });
+}
+
+function finishWorksheet() {
+  if (selectedSubject !== 'general') {
+    finishQuiz();
+    return;
+  }
+  if (worksheetNumber === 5) {
+    finishQuiz();
+    return;
+  }
+  show(resultView);
+  $('#result-kicker').textContent = `WORKSHEET ${worksheetNumber} COMPLETE`;
+  $('#result-title').textContent = `${worksheetNumber} ${worksheetNumber === 1 ? 'worksheet' : 'worksheets'} completed`;
+  $('#result-score').textContent = `${worksheetScore} out of 5 correct`;
+  $('#result-copy').textContent = 'Nice work! Continue when you are ready for the next worksheet.';
+  $('#email-status').textContent = '';
+  $('#next-worksheet-button').hidden = false;
+  $('.result-actions').hidden = false;
+  $('#retry-button').hidden = true;
+  $('#review-button').hidden = false;
+  $('#review-button').textContent = 'Review answers';
+  $('#review-button').setAttribute('aria-expanded', 'false');
+  $('#review-list').hidden = true;
+}
+
+function startNextWorksheet() {
+  worksheetNumber++;
+  worksheetScore = 0;
+  current++;
+  $('#review-list').hidden = true;
+  $('#review-button').textContent = 'Review answers';
+  $('#review-button').setAttribute('aria-expanded', 'false');
+  show(questionView);
+  renderQuestion();
 }
 
 $('#start-button').addEventListener('click', startQuiz);
 $('#back-button').addEventListener('click', () => show(setup));
 $('#submit-answer').addEventListener('click', submitAnswer);
-$('#next-button').addEventListener('click', () => current + 1 < questions.length ? (current++, renderQuestion()) : finishQuiz());
+$('#next-button').addEventListener('click', () => {
+  if (selectedSubject === 'general' && (current + 1) % 5 === 0) finishWorksheet();
+  else if (current + 1 < questions.length) { current++; renderQuestion(); }
+  else finishQuiz();
+});
+$('#next-worksheet-button').addEventListener('click', startNextWorksheet);
 $('#retry-button').addEventListener('click', () => show(setup));
 $('#review-button').addEventListener('click', () => {
   const list = $('#review-list');
-  list.hidden = !list.hidden;
-  $('#review-button').textContent = list.hidden ? 'Review answers' : 'Hide review';
+  const shouldShow = list.hidden;
+  if (shouldShow) renderReviewAnswers();
+  list.hidden = !shouldShow;
+  $('#review-button').setAttribute('aria-expanded', String(shouldShow));
+  $('#review-button').textContent = shouldShow ? 'Hide review' : 'Review answers';
 });
