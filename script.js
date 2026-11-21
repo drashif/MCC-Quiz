@@ -44,7 +44,8 @@ const quizzes = {
     { q: 'What is frozen water called?', options: ['Steam', 'Ice', 'Mist', 'Rain'], answer: 1, note: 'When water freezes, it becomes ice.' },
     { q: 'Which country is home to the Taj Mahal?', options: ['Pakistan', 'India', 'Nepal', 'Bangladesh'], answer: 1, note: 'The Taj Mahal is in Agra, India.' },
     { q: 'Which sense organ do we use to hear?', options: ['Eyes', 'Ears', 'Nose', 'Skin'], answer: 1, note: 'We use our ears to hear sounds.' },
-    { q: 'How many months are there in a year?', options: ['10', '11', '12', '13'], answer: 2, note: 'There are 12 months in a year.' }
+    { q: 'How many months are there in a year?', options: ['10', '11', '12', '13'], answer: 2, note: 'There are 12 months in a year.' },
+    { q: 'Which is the largest planet in our solar system?', options: ['Saturn', 'Earth', 'Jupiter', 'Neptune'], answer: 2, note: 'Jupiter is the largest planet in our solar system.' }
   ]}
 };
 
