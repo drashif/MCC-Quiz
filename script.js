@@ -184,7 +184,7 @@ function finishQuiz() {
   $('#result-kicker').textContent = selectedSubject === 'general' ? 'ALL FIVE WORKSHEETS COMPLETE' : 'ROUND COMPLETE';
   $('#result-title').textContent = percent === 1 ? 'Brilliant work!' : percent >= .6 ? 'Lovely effort!' : 'Keep that curiosity!';
   $('#result-score').textContent = selectedSubject === 'general'
-    ? `${score} correct answers out of ${questions.length}`
+    ? `10 bonus marks awarded`
     : `${score} out of ${questions.length} correct`;
   const progressKey = `mccQuizProgress:${studentId}`;
   let history = [];
@@ -195,7 +195,7 @@ function finishQuiz() {
   const average = Math.round(history.reduce((sum, item) => sum + item.score / item.total, 0) / history.length * 100);
   const best = Math.round(Math.max(...history.map((item) => item.score / item.total)) * 100);
   $('#result-copy').textContent = selectedSubject === 'general'
-    ? `You earned ${completionBonus} separate bonus marks for completing all five worksheets. Your quiz score remains out of ${questions.length}. Your average is ${average}% and your best is ${best}%.`
+    ? `You completed all five G.K. worksheets and earned ${completionBonus} bonus marks.`
     : `${percent === 1 ? 'You got every question right!' : 'Every round is a chance to practise.'} Round ${history.length} complete. Your average is ${average}% and your best is ${best}%.`;
   const emailStatus = $('#email-status');
   emailStatus.className = 'email-status';
