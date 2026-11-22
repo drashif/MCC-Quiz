@@ -182,9 +182,11 @@ function finishQuiz() {
   const percent = score / questions.length;
   const completionBonus = selectedSubject === 'general' ? 10 : 0;
   $('#result-kicker').textContent = selectedSubject === 'general' ? 'ALL FIVE WORKSHEETS COMPLETE' : 'ROUND COMPLETE';
-  $('#result-title').textContent = percent === 1 ? 'Brilliant work!' : percent >= .6 ? 'Lovely effort!' : 'Keep that curiosity!';
+  $('#result-title').textContent = selectedSubject === 'general'
+    ? 'All five worksheets complete!'
+    : percent === 1 ? 'Brilliant work!' : percent >= .6 ? 'Lovely effort!' : 'Keep that curiosity!';
   $('#result-score').textContent = selectedSubject === 'general'
-    ? `10 bonus marks awarded`
+    ? `Worksheet 5: ${worksheetScore} correct answers out of 5`
     : `${score} out of ${questions.length} correct`;
   const progressKey = `mccQuizProgress:${studentId}`;
   let history = [];
@@ -208,8 +210,11 @@ function finishQuiz() {
       _template: 'table',
       student_id: studentId,
       subject: quizzes[selectedSubject].name,
+      score: `${score} / ${questions.length} correct`,
       completion_bonus: selectedSubject === 'general' ? `${completionBonus} marks` : 'Not applicable',
       rounds_completed: history.length,
+      average_score: `${average}%`,
+      best_score: `${best}%`,
       completed_at: completedAt,
       _url: window.location.href
     })
