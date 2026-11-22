@@ -180,13 +180,12 @@ function submitAnswer() {
 function finishQuiz() {
   show(resultView);
   const percent = score / questions.length;
-  const quizMarksOutOfTen = selectedSubject === 'general' ? Number((score / questions.length * 10).toFixed(1)) : null;
   const completionBonus = selectedSubject === 'general' ? 10 : 0;
-  const totalMarksOutOfTwenty = selectedSubject === 'general' ? Number((quizMarksOutOfTen + completionBonus).toFixed(1)) : null;
+  const totalMarksIncludingBonus = selectedSubject === 'general' ? score + completionBonus : null;
   $('#result-kicker').textContent = selectedSubject === 'general' ? 'ALL FIVE WORKSHEETS COMPLETE' : 'ROUND COMPLETE';
   $('#result-title').textContent = percent === 1 ? 'Brilliant work!' : percent >= .6 ? 'Lovely effort!' : 'Keep that curiosity!';
   $('#result-score').textContent = selectedSubject === 'general'
-    ? `You got ${totalMarksOutOfTwenty} marks out of 20`
+    ? `${score} correct answers out of ${questions.length}`
     : `${score} out of ${questions.length} correct`;
   const progressKey = `mccQuizProgress:${studentId}`;
   let history = [];
@@ -197,7 +196,7 @@ function finishQuiz() {
   const average = Math.round(history.reduce((sum, item) => sum + item.score / item.total, 0) / history.length * 100);
   const best = Math.round(Math.max(...history.map((item) => item.score / item.total)) * 100);
   $('#result-copy').textContent = selectedSubject === 'general'
-    ? `Quiz score: ${quizMarksOutOfTen} / 10 · Completion bonus: +${completionBonus} · Total: ${totalMarksOutOfTwenty} / 20. Your average is ${average}% and your best is ${best}%.`
+    ? `You earned ${completionBonus} bonus marks for completing all five worksheets. Total including bonus: ${totalMarksIncludingBonus} out of ${questions.length + completionBonus}. Your average is ${average}% and your best is ${best}%.`
     : `${percent === 1 ? 'You got every question right!' : 'Every round is a chance to practise.'} Round ${history.length} complete. Your average is ${average}% and your best is ${best}%.`;
   const emailStatus = $('#email-status');
   emailStatus.className = 'email-status';
@@ -211,8 +210,8 @@ function finishQuiz() {
       student_id: studentId,
       subject: quizzes[selectedSubject].name,
       score: `${score} / ${questions.length}`,
-      marks: selectedSubject === 'general' ? `${totalMarksOutOfTwenty} / 20` : `${score} / ${questions.length}`,
-      quiz_marks: selectedSubject === 'general' ? `${quizMarksOutOfTen} / 10` : `${score} / ${questions.length}`,
+      marks: selectedSubject === 'general' ? `${totalMarksIncludingBonus} / ${questions.length + completionBonus} including bonus` : `${score} / ${questions.length}`,
+      quiz_score: selectedSubject === 'general' ? `${score} / ${questions.length} correct` : `${score} / ${questions.length}`,
       completion_bonus: selectedSubject === 'general' ? `${completionBonus} marks` : 'Not applicable',
       rounds_completed: history.length,
       average_score: `${average}%`,
