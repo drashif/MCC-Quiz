@@ -208,13 +208,8 @@ function finishQuiz() {
       _template: 'table',
       student_id: studentId,
       subject: quizzes[selectedSubject].name,
-      score: `${score} / ${questions.length}`,
-      marks: selectedSubject === 'general' ? `${score} / ${questions.length} quiz marks` : `${score} / ${questions.length}`,
-      quiz_score: selectedSubject === 'general' ? `${score} / ${questions.length} correct` : `${score} / ${questions.length}`,
       completion_bonus: selectedSubject === 'general' ? `${completionBonus} marks` : 'Not applicable',
       rounds_completed: history.length,
-      average_score: `${average}%`,
-      best_score: `${best}%`,
       completed_at: completedAt,
       _url: window.location.href
     })
