@@ -64,6 +64,7 @@ let worksheetScore = 0;
 let responses = [];
 let selectedChoice = null;
 let studentId = '';
+let verifiedStudentId = '';
 
 $('#year').textContent = new Date().getFullYear();
 subjectCards.forEach((card) => card.addEventListener('click', () => {
@@ -81,10 +82,13 @@ function show(view) {
   resultView.hidden = view !== resultView;
 }
 
-function startQuiz() {
+function verifyStudentId() {
   const input = $('#student-id');
   const status = $('#student-id-status');
   studentId = input.value.trim().toUpperCase();
+  verifiedStudentId = '';
+  $('#start-button').disabled = true;
+  status.className = 'student-id-status';
   status.textContent = '';
   if (!/^MCC-[A-Z0-9]{8}$/.test(studentId)) {
     status.textContent = 'Enter the ID your teacher gave you (MCC- followed by 8 letters or numbers).';
@@ -94,6 +98,23 @@ function startQuiz() {
   const approvedIds = (window.MCC_APPROVED_STUDENT_IDS || []).map((id) => String(id).trim().toUpperCase());
   if (!approvedIds.includes(studentId)) {
     status.textContent = 'That ID is not on the teacher-approved list. Please check it with your teacher.';
+    input.focus();
+    return;
+  }
+  verifiedStudentId = studentId;
+  status.textContent = 'ID Verified';
+  status.classList.add('success');
+  $('#start-button').disabled = false;
+  return true;
+}
+
+function startQuiz() {
+  const input = $('#student-id');
+  const status = $('#student-id-status');
+  studentId = input.value.trim().toUpperCase();
+  if (!verifiedStudentId || verifiedStudentId !== studentId) {
+    status.className = 'student-id-status';
+    status.textContent = 'Click Enter to verify your ID first.';
     input.focus();
     return;
   }
@@ -293,7 +314,7 @@ function startNextWorksheet() {
 }
 
 $('#start-button').addEventListener('click', startQuiz);
-$('#id-enter-button').addEventListener('click', startQuiz);
+$('#id-enter-button').addEventListener('click', verifyStudentId);
 $('#back-button').addEventListener('click', () => show(setup));
 $('#submit-answer').addEventListener('click', submitAnswer);
 $('#next-button').addEventListener('click', () => {
@@ -310,4 +331,11 @@ $('#review-button').addEventListener('click', () => {
   list.hidden = !shouldShow;
   $('#review-button').setAttribute('aria-expanded', String(shouldShow));
   $('#review-button').textContent = shouldShow ? 'Hide review' : 'Review answers';
+});
+$('#student-id').addEventListener('input', () => {
+  verifiedStudentId = '';
+  $('#start-button').disabled = true;
+  const status = $('#student-id-status');
+  status.className = 'student-id-status';
+  status.textContent = '';
 });
