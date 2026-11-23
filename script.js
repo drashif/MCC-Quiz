@@ -188,6 +188,7 @@ function finishQuiz() {
   $('#result-score').textContent = selectedSubject === 'general'
     ? `Worksheet 5: ${worksheetScore} correct answers out of 5`
     : `${score} out of ${questions.length} correct`;
+  $('#completion-bonus-award').hidden = selectedSubject !== 'general';
   const progressKey = `mccQuizProgress:${studentId}`;
   let history = [];
   try { history = JSON.parse(localStorage.getItem(progressKey) || '[]'); } catch { history = []; }
@@ -270,6 +271,7 @@ function finishWorksheet() {
   $('#result-score').textContent = `${worksheetScore} out of 5 correct`;
   $('#result-copy').textContent = 'Nice work! Continue when you are ready for the next worksheet.';
   $('#email-status').textContent = '';
+  $('#completion-bonus-award').hidden = true;
   $('#next-worksheet-button').hidden = false;
   $('.result-actions').hidden = false;
   $('#retry-button').hidden = true;
@@ -291,6 +293,7 @@ function startNextWorksheet() {
 }
 
 $('#start-button').addEventListener('click', startQuiz);
+$('#id-enter-button').addEventListener('click', startQuiz);
 $('#back-button').addEventListener('click', () => show(setup));
 $('#submit-answer').addEventListener('click', submitAnswer);
 $('#next-button').addEventListener('click', () => {
