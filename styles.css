@@ -5,3 +5,4 @@
 #review-list[hidden]{display:none!important}.review-list:not([hidden]){display:block}
 .student-id-row{display:flex;align-items:stretch;gap:8px}.student-id-row input{flex:1;min-width:0}.student-id-card .id-enter-button{border:0;border-radius:3px;padding:0 13px;background:#684894;color:#fff;font:600 10px var(--sans);cursor:pointer;letter-spacing:0}.student-id-card .id-enter-button:hover{background:#47266e}.student-id-card .id-enter-button span{margin-left:6px}.bonus-award{max-width:390px;margin:16px auto;padding:15px 18px;border:2px solid #d9ad50;border-radius:8px;background:#fff8df;color:#664b0b;display:flex;flex-direction:column;gap:5px}.bonus-award[hidden]{display:none!important}.bonus-award strong{font:800 20px var(--display);letter-spacing:.04em}.bonus-award span{font-size:11px}
 .student-id-status.success{color:#527a54;font-weight:700}
+.change-id-button{margin-bottom:10px}

@@ -34,11 +34,17 @@
     <section class="quiz-shell" aria-label="Quiz practice">
       <div class="quiz-card" id="quiz-card">
         <div class="setup-view" id="setup-view">
-          <div class="card-heading"><div><p class="eyebrow muted">YOUR PRACTICE SESSION</p><h2>What shall we explore?</h2></div><span class="sparkle" aria-hidden="true">✳</span></div>
-          <p class="subheading">Choose a subject to get started. General knowledge has five worksheets of five questions each.</p>
-          <div class="student-id-card"><label for="student-id">STUDENT ID FROM YOUR TEACHER</label><div class="student-id-row"><input id="student-id" maxlength="12" autocomplete="off" placeholder="Enter Your ID" aria-describedby="student-id-help"><button class="id-enter-button" id="id-enter-button" type="button">Enter <span aria-hidden="true">→</span></button></div></div>
-          <small class="student-id-help" id="student-id-help">Enter the unique ID your teacher gave you. Your practice history is saved in this browser.</small>
-          <p class="student-id-status" id="student-id-status" role="status" aria-live="polite"></p>
+          <div id="id-entry-panel">
+            <div class="card-heading"><div><p class="eyebrow muted">STUDENT LOGIN</p><h2>Enter your ID to begin</h2></div><span class="sparkle" aria-hidden="true">✳</span></div>
+            <p class="subheading">Use the approved student ID your teacher gave you.</p>
+            <div class="student-id-card"><label for="student-id">STUDENT ID FROM YOUR TEACHER</label><div class="student-id-row"><input id="student-id" maxlength="12" autocomplete="off" placeholder="Enter Your ID" aria-describedby="student-id-help"><button class="id-enter-button" id="id-enter-button" type="button">Enter <span aria-hidden="true">→</span></button></div></div>
+            <small class="student-id-help" id="student-id-help">Enter the unique ID your teacher gave you. Your practice history is saved in this browser.</small>
+            <p class="student-id-status" id="student-id-status" role="status" aria-live="polite"></p>
+          </div>
+          <div id="welcome-screen" hidden>
+            <div class="card-heading"><div><p class="eyebrow muted">ID VERIFIED</p><h2>Welcome to MCC Quiz!</h2></div><span class="sparkle" aria-hidden="true">✳</span></div>
+            <p class="subheading">Choose a subject to get started. General knowledge has five worksheets of five questions each.</p>
+            <button class="secondary-button change-id-button" id="change-id-button" type="button">Change ID</button>
           <div class="subject-grid" role="group" aria-label="Choose a quiz subject">
             <button class="subject-card selected" type="button" data-subject="math" aria-pressed="true"><span class="subject-icon math-icon">＋</span><span><b>Mathematics</b><small>Numbers &amp; patterns</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
             <button class="subject-card" type="button" data-subject="science" aria-pressed="false"><span class="subject-icon science-icon">◉</span><span><b>Science</b><small>How the world works</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
@@ -46,6 +52,7 @@
             <button class="subject-card" type="button" data-subject="general" aria-pressed="false"><span class="subject-icon general-icon">✦</span><span><b>General knowledge</b><small>Curious about everything</small></span><span class="checkmark" aria-hidden="true">✓</span></button>
           </div>
           <div class="setup-footer"><p><span>☼</span> No pressure. Just practice.</p><button class="primary-button" id="start-button" type="button" disabled>Start a quiz <span aria-hidden="true">↗</span></button></div>
+          </div>
         </div>
 
         <div class="question-view" id="question-view" hidden>

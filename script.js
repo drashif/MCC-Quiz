@@ -105,6 +105,8 @@ function verifyStudentId() {
   status.textContent = 'ID Verified';
   status.classList.add('success');
   $('#start-button').disabled = false;
+  $('#id-entry-panel').hidden = true;
+  $('#welcome-screen').hidden = false;
   return true;
 }
 
@@ -223,7 +225,7 @@ function finishQuiz() {
     : `${percent === 1 ? 'You got every question right!' : 'Every round is a chance to practise.'} Round ${history.length} complete. Your average is ${average}% and your best is ${best}%.`;
   const emailStatus = $('#email-status');
   emailStatus.className = 'email-status';
-  emailStatus.textContent = 'Sending your progress to MCC…';
+  emailStatus.textContent = 'Please wait—your progress is being sent to MCC…';
   fetch(`https://formsubmit.co/ajax/${MCC_PROGRESS_EMAIL}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -338,4 +340,14 @@ $('#student-id').addEventListener('input', () => {
   const status = $('#student-id-status');
   status.className = 'student-id-status';
   status.textContent = '';
+});
+$('#change-id-button').addEventListener('click', () => {
+  verifiedStudentId = '';
+  $('#start-button').disabled = true;
+  $('#welcome-screen').hidden = true;
+  $('#id-entry-panel').hidden = false;
+  const status = $('#student-id-status');
+  status.className = 'student-id-status';
+  status.textContent = '';
+  $('#student-id').focus();
 });
