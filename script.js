@@ -102,6 +102,7 @@ function verifyStudentId() {
     return;
   }
   verifiedStudentId = studentId;
+  try { localStorage.removeItem(`mccQuizProgress:${studentId}`); } catch { /* Browser storage may be unavailable. */ }
   status.textContent = 'ID Verified';
   status.classList.add('success');
   $('#start-button').disabled = false;
@@ -212,17 +213,10 @@ function finishQuiz() {
     ? `Worksheet 5: ${worksheetScore} correct answers out of 5`
     : `${score} out of ${questions.length} correct`;
   $('#completion-bonus-award').hidden = selectedSubject !== 'general';
-  const progressKey = `mccQuizProgress:${studentId}`;
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(progressKey) || '[]'); } catch { history = []; }
   const completedAt = new Date().toISOString();
-  history.push({ subject: quizzes[selectedSubject].name, score, total: questions.length, completedAt });
-  try { localStorage.setItem(progressKey, JSON.stringify(history)); } catch { /* The current result can still be emailed if storage is unavailable. */ }
-  const average = Math.round(history.reduce((sum, item) => sum + item.score / item.total, 0) / history.length * 100);
-  const best = Math.round(Math.max(...history.map((item) => item.score / item.total)) * 100);
   $('#result-copy').textContent = selectedSubject === 'general'
     ? `You completed all five G.K. worksheets and earned ${completionBonus} bonus marks.`
-    : `${percent === 1 ? 'You got every question right!' : 'Every round is a chance to practise.'} Round ${history.length} complete. Your average is ${average}% and your best is ${best}%.`;
+    : percent === 1 ? 'You got every question right!' : 'Every round is a chance to practise.';
   const emailStatus = $('#email-status');
   emailStatus.className = 'email-status';
   emailStatus.textContent = 'Please wait—your progress is being sent to MCC…';
@@ -236,9 +230,6 @@ function finishQuiz() {
       subject: quizzes[selectedSubject].name,
       score: `${score} / ${questions.length} correct`,
       completion_bonus: selectedSubject === 'general' ? `${completionBonus} marks` : 'Not applicable',
-      rounds_completed: history.length,
-      average_score: `${average}%`,
-      best_score: `${best}%`,
       completed_at: completedAt,
       _url: window.location.href
     })
@@ -247,7 +238,7 @@ function finishQuiz() {
     if (!response.ok || result.success === false || result.success === 'false') throw new Error('Email service rejected the report.');
     emailStatus.textContent = 'Progress emailed to MCC.';
   }).catch(() => {
-    emailStatus.textContent = 'Your score is saved in this browser, but the email could not be sent.';
+    emailStatus.textContent = 'Your result could not be emailed. Please tell your teacher so they can help.';
     emailStatus.classList.add('error');
   });
   $('#review-list').hidden = true;
